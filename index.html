@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Binary Converter</title>
+    <style>
+        :root {
+            --neon-purple: #cc00ff;
+            --neon-blue: #00d4ff;
+            --bg-dark: #0a0a0a;
+            --card-bg: #1a1a1a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(204, 0, 255, 0.2);
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--neon-purple);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            background: #252525;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: white;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--neon-purple);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px;
+            background: var(--neon-purple);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .result-box {
+            margin-top: 15px;
+            padding: 10px;
+            background: #111;
+            border-radius: 4px;
+            min-height: 40px;
+            word-break: break-all;
+            font-family: 'Courier New', Courier, monospace;
+            border-left: 3px solid var(--neon-blue);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Binary Lab</h1>
+
+        <div class="section">
+            <label>Text to Binary</label>
+            <input type="text" id="textInput" placeholder="Type something...">
+            <div class="actions">
+                <button onclick="toBinary()">Convert</button>
+            </div>
+            <!--if prast ENTER he has to pos to my copee-->
+            <div class="result-box" id="binaryResult">Result will appear here...</div>
+            <button id="copy" onclick="copyToClipboard('binaryResult')">Copy</button>
+        </div>
+
+        <hr style="border: 0.5px solid #333;">
+
+        <div class="section">
+            <label>Binary to Text</label>
+            <input type="text" id="binaryInput" placeholder="01001000 01001001">
+            <div class="actions">
+                <button onclick="toText()" style="background: var(--neon-blue);">Decode</button>
+            </div>
+            <div class="result-box" id="textResult">Result will appear here...</div>
+            <button id="copyText" onclick="copyToClipboard('textResult')">Copy</button>
+            <button id="paste" onclick="pasteFromClipboard('binaryInput')">Paste</button>
+        </div>
+    </div>
+
+    <script>
+        function toBinary() {
+            const input = document.getElementById('textInput').value;
+            const result = input.split('')
+                .map(char => char.charCodeAt(0).toString(2).padStart(8, '0'))
+                .join(' ');
+            document.getElementById('binaryResult').textContent = result || "Enter text above";
+        }
+
+        function toText() {
+            const input = document.getElementById('binaryInput').value.trim();
+            if (!input) return;
+            try {
+                const result = input.split(' ')
+                    .map(bin => String.fromCharCode(parseInt(bin, 2)))
+                    .join('');
+                document.getElementById('textResult').textContent = result;
+            } catch (e) {
+                document.getElementById('textResult').textContent = "Invalid Binary";
+            }
+        }
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        function pasteFromClipboard(elementId) {
+            navigator.clipboard.readText().then(text => {
+                document.getElementById(elementId).value = text;
+            }).catch(err => {
+                console.error('Failed to paste: ', err);
+            });
+        }
+
+        // Add Enter key functionality
+        document.getElementById('textInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                toBinary();
+            }
+        });
+
+        document.getElementById('binaryInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                toText();
+            }
+        });
+    </script>
+</body>
+</html>
