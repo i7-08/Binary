@@ -3,108 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Binary Converter</title>
+    <title>Neon Binary </title>
+    <link rel="icon" href="https://i.pinimg.com/736x/a7/2f/ba/a72fbab50410b245ed79f8889d4733ff.jpg">
     <style>
         :root {
             --neon-purple: #cc00ff;
             --neon-blue: #00d4ff;
-            --bg-dark: #0a0a0a;
-            --card-bg: #1a1a1a;
+            --neon-glow-purple: rgba(204, 0, 255, 0.6);
+            --neon-glow-blue: rgba(0, 212, 255, 0.6);
+            --bg-dark: #06060c;
+            --card-bg: rgba(22, 22, 33, 0.85);
+            --input-bg: #11111a;
+            --border-color: #2a2a40;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-dark);
-            color: #eee;
+            background-image: 
+                linear-gradient(rgba(18, 18, 32, 0.5) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(18, 18, 32, 0.5) 2px, transparent 2px);
+            background-size: 30px 30px;
+            color: #f0f0f5;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            overflow-x: hidden;
         }
 
         .container {
             background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(204, 0, 255, 0.2);
-            width: 90%;
-            max-width: 500px;
-            border: 1px solid #333;
+            backdrop-filter: blur(12px);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 15px var(--neon-glow-purple);
+            width: 95%;
+            max-width: 550px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            border-radius: 18px;
+            z-index: -1;
+            opacity: 0.3;
         }
 
         h1 {
             text-align: center;
-            color: var(--neon-purple);
-            margin-bottom: 1.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-glow-purple), 0 0 20px var(--neon-purple);
+            margin-top: 0;
+            margin-bottom: 2rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            animation: pulseGlow 3s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 10px var(--neon-glow-purple), 0 0 20px var(--neon-purple); }
+            100% { text-shadow: 0 0 15px var(--neon-glow-blue), 0 0 30px var(--neon-blue); }
         }
 
         .section {
             margin-bottom: 2rem;
+            position: relative;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             color: var(--neon-blue);
+            text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+        }
+
+        .input-wrapper {
+            position: relative;
         }
 
         input {
             width: 100%;
-            padding: 12px;
-            box-sizing: border-box;
-            background: #252525;
-            border: 1px solid #444;
-            border-radius: 6px;
+            padding: 14px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             color: white;
             font-size: 1rem;
-            transition: border 0.3s;
+            outline: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
         }
 
         input:focus {
-            outline: none;
             border-color: var(--neon-purple);
+            box-shadow: 0 0 12px var(--neon-glow-purple), inset 0 1px 2px rgba(0,0,0,0.5);
         }
 
         .actions {
             display: flex;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 12px;
+            margin-top: 14px;
         }
 
         button {
             flex: 1;
-            padding: 10px;
-            background: var(--neon-purple);
+            padding: 12px;
+            background: linear-gradient(135deg, #a300cc 0%, var(--neon-purple) 100%);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            transition: opacity 0.2s, transform 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.6s ease;
+        }
+
+        button:hover::after {
+            left: 100%;
         }
 
         button:hover {
-            opacity: 0.8;
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px var(--neon-glow-purple);
         }
 
         button:active {
-            transform: scale(0.98);
+            transform: translateY(1px);
+        }
+
+        .btn-secondary {
+            background: #222235;
+            border: 1px solid var(--border-color);
+            color: #aaa;
+        }
+
+        .btn-secondary:hover {
+            background: #2a2a44;
+            color: #fff;
+            box-shadow: 0 6px 15px rgba(255,255,255,0.05);
+        }
+
+        .btn-decode {
+            background: linear-gradient(135deg, #00a8cc 0%, var(--neon-blue) 100%);
+        }
+        
+        .btn-decode:hover {
+            box-shadow: 0 6px 15px var(--neon-glow-blue);
         }
 
         .result-box {
             margin-top: 15px;
-            padding: 10px;
-            background: #111;
-            border-radius: 4px;
-            min-height: 40px;
+            padding: 14px;
+            background: rgba(5, 5, 10, 0.85);
+            border-radius: 8px;
+            min-height: 48px;
             word-break: break-all;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Consolas', 'Courier New', monospace;
             border-left: 3px solid var(--neon-blue);
+            font-size: 0.95rem;
+            color: #a0aec0;
+            display: flex;
+            align-items: center;
+        }
+
+        .result-box.has-content {
+            color: #fff;
+            text-shadow: 0 0 2px rgba(255,255,255,0.5);
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: -300px;
+            background: #111;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 6px;
+            border-left: 4px solid var(--neon-purple);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 1000;
+            transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.show {
+            right: 20px;
         }
     </style>
 </head>
@@ -113,78 +226,133 @@
     <div class="container">
         <h1>Binary Lab</h1>
 
+        <!-- Encoding Section -->
         <div class="section">
-            <label>Text to Binary</label>
-            <input type="text" id="textInput" placeholder="Type something...">
+            <label for="textInput">Text to Binary</label>
+            <div class="input-wrapper">
+                <input type="text" id="textInput" placeholder="Type something to convert...">
+            </div>
             <div class="actions">
                 <button onclick="toBinary()">Convert</button>
+                <button class="btn-secondary" id="copy" onclick="copyToClipboard('binaryResult')">Copy</button>
             </div>
-            <!--if prast ENTER he has to pos to my copee-->
             <div class="result-box" id="binaryResult">Result will appear here...</div>
-            <button id="copy" onclick="copyToClipboard('binaryResult')">Copy</button>
         </div>
 
-        <hr style="border: 0.5px solid #333;">
+        <hr style="border: none; height: 1px; background: linear-gradient(90deg, transparent, var(--border-color), transparent); margin: 2rem 0;">
 
+        <!-- Decoding Section -->
         <div class="section">
-            <label>Binary to Text</label>
-            <input type="text" id="binaryInput" placeholder="01001000 01001001">
-            <div class="actions">
-                <button onclick="toText()" style="background: var(--neon-blue);">Decode</button>
+            <label for="binaryInput">Binary to Text</label>
+            <div class="input-wrapper">
+                <input type="text" id="binaryInput" placeholder="01001000 01001001">
             </div>
-            <div class="result-box" id="textResult">Result will appear here...</div>
-            <button id="copyText" onclick="copyToClipboard('textResult')">Copy</button>
-            <button id="paste" onclick="pasteFromClipboard('binaryInput')">Paste</button>
+            <div class="actions">
+                <button class="btn-decode" onclick="toText()">Decode</button>
+                <button class="btn-secondary" id="paste" onclick="pasteFromClipboard('binaryInput')">Paste</button>
+                <button class="btn-secondary" id="copyText" onclick="copyToClipboard('textResult')">Copy</button>
+            </div>
+            <div class="result-box" id="textResult" style="border-left-color: var(--neon-purple);">Result will appear here...</div>
         </div>
     </div>
 
+    <div id="toast" class="toast">Action Complete</div>
+
     <script>
+        // Custom elegant notification engine
+        function showToast(message, isBlue = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.borderLeftColor = isBlue ? 'var(--neon-blue)' : 'var(--neon-purple)';
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
         function toBinary() {
             const input = document.getElementById('textInput').value;
+            const resultBox = document.getElementById('binaryResult');
+            
+            if (!input.length) {
+                resultBox.textContent = "Enter text above";
+                resultBox.classList.remove('has-content');
+                return;
+            }
+
             const result = input.split('')
                 .map(char => char.charCodeAt(0).toString(2).padStart(8, '0'))
                 .join(' ');
-            document.getElementById('binaryResult').textContent = result || "Enter text above";
+                
+            resultBox.textContent = result;
+            resultBox.classList.add('has-content');
         }
 
         function toText() {
             const input = document.getElementById('binaryInput').value.trim();
-            if (!input) return;
+            const resultBox = document.getElementById('textResult');
+            
+            if (!input) {
+                resultBox.textContent = "Enter binary digits sequence";
+                resultBox.classList.remove('has-content');
+                return;
+            }
+            
             try {
-                const result = input.split(' ')
-                    .map(bin => String.fromCharCode(parseInt(bin, 2)))
+                // Eliminate extra or messy white spaces safely
+                const binaryArray = input.split(/\s+/);
+                const result = binaryArray
+                    .map(bin => {
+                        if (!/^[01]+$/.test(bin)) throw new Error('Invalid elements');
+                        return String.fromCharCode(parseInt(bin, 2));
+                    })
                     .join('');
-                document.getElementById('textResult').textContent = result;
+                    
+                resultBox.textContent = result;
+                resultBox.classList.add('has-content');
             } catch (e) {
-                document.getElementById('textResult').textContent = "Invalid Binary";
+                resultBox.textContent = "⚠️ Error: Invalid Binary String Sequence";
+                resultBox.classList.remove('has-content');
             }
         }
 
         function copyToClipboard(elementId) {
-            const text = document.getElementById(elementId).textContent;
+            const resultBox = document.getElementById(elementId);
+            const text = resultBox.textContent;
+            
+            if (text === "Result will appear here..." || text.startsWith("Enter") || text.startsWith("⚠️")) {
+                showToast("Nothing valid to copy yet!");
+                return;
+            }
+
             navigator.clipboard.writeText(text).then(() => {
-                alert('Copied to clipboard!');
+                showToast('Copied to system clipboard!', elementId === 'textResult');
             }).catch(err => {
-                console.error('Failed to copy: ', err);
+                console.error('Secure context Clipboard API failure: ', err);
             });
         }
 
         function pasteFromClipboard(elementId) {
             navigator.clipboard.readText().then(text => {
-                document.getElementById(elementId).value = text;
+                const targetInput = document.getElementById(elementId);
+                targetInput.value = text;
+                showToast('Clipboard contents injected!', true);
+                // Dynamically fire decode optimization pipeline post-paste
+                if (elementId === 'binaryInput') toText();
             }).catch(err => {
-                console.error('Failed to paste: ', err);
+                showToast('Clipboard reading access blocked.');
+                console.error('Failed to read from paste system: ', err);
             });
         }
 
-        // Add Enter key functionality
-        document.getElementById('textInput').addEventListener('keypress', function(e) {
+        // Global Event Handling Orchestration
+        document.getElementById('textInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 toBinary();
             }
         });
 
-        document.getElementById('binaryInput').addEventListener('keypress', function(e) {
+        document.getElementById('binaryInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 toText();
             }
